@@ -10,6 +10,7 @@
     "format": "prettier --write src/App.tsx src/main.tsx src/App.css src/index.css src/styled.d.ts src/features src/lib src/test vite.config.ts vitest.config.ts eslint.config.js package.json",
     "format:check": "prettier --check src/App.tsx src/main.tsx src/App.css src/index.css src/styled.d.ts src/features src/lib src/test vite.config.ts vitest.config.ts eslint.config.js package.json",
     "test": "vitest run --config vitest.config.ts",
+    "test:coverage": "vitest run --config vitest.config.ts --coverage",
     "test:watch": "vitest --config vitest.config.ts",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
