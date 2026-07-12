@@ -222,4 +222,57 @@ describe('draft resource forms', () => {
       ),
     )
   })
+
+  it('discards completed edits without sending a PUT request', async () => {
+    const completed = {
+      ...draft,
+      status: 'completed' as const,
+      basicInfo: {
+        resourceName: 'Locked name',
+        owner: 'Ada',
+        email: 'ada@example.com',
+        description: 'Ready',
+        priority: 'high',
+      },
+      projectDetails: {
+        projectName: 'Project',
+        budget: '100',
+        category: 'internal',
+        options: ['FE devs'],
+      },
+    }
+    vi.mocked(getResource).mockResolvedValue(completed)
+    const client = new QueryClient({
+      defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
+    })
+    const user = userEvent.setup()
+    render(
+      <ThemeProvider theme={theme}>
+        <QueryClientProvider client={client}>
+          <CompletedDraftsProvider>
+            <MemoryRouter initialEntries={['/resources/12/basic-info']}>
+              <Routes>
+                <Route
+                  path="/resources/:resourceId/basic-info"
+                  element={<BasicInfoPage />}
+                />
+                <Route path="/resources/:resourceId" element={<ResourceOverviewPage />} />
+              </Routes>
+            </MemoryRouter>
+          </CompletedDraftsProvider>
+        </QueryClientProvider>
+      </ThemeProvider>,
+    )
+
+    const owner = await screen.findByRole('textbox', { name: 'Owner' })
+    await user.clear(owner)
+    await user.type(owner, 'Grace Hopper')
+    await user.click(screen.getByRole('button', { name: 'Save draft changes' }))
+    await user.click(await screen.findByRole('button', { name: 'Discard changes' }))
+
+    expect(replaceCompletedResource).not.toHaveBeenCalled()
+    expect(
+      screen.queryByRole('button', { name: 'Submit changes' }),
+    ).not.toBeInTheDocument()
+  })
 })
