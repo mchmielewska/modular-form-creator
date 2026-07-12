@@ -1,6 +1,6 @@
 import { CheckboxGroup, Input, Select } from '../../../design-system'
 import type { ProjectDetails } from '../resource.types'
-import { ModuleFormLayout } from './ModuleFormLayout'
+import ModuleFormLayout from './ModuleFormLayout'
 import {
   PROJECT_CATEGORIES,
   TEAM_MEMBERS,
@@ -22,7 +22,7 @@ interface Props {
   onSubmit: () => void
 }
 
-export function ProjectDetailsView(props: Props) {
+const ProjectDetailsView = (props: Props) => {
   return (
     <ModuleFormLayout
       resourceId={props.resourceId}
@@ -77,3 +77,5 @@ export function ProjectDetailsView(props: Props) {
     </ModuleFormLayout>
   )
 }
+
+export default ProjectDetailsView

@@ -7,8 +7,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { theme } from '../../../design-system'
 import type { Resource } from '../resource.types'
 import { getResource, provisionResource } from '../resources.api'
-import { ResourceOverviewPage } from './ResourceOverviewPage'
-import { CompletedDraftsProvider } from '../completed-drafts/CompletedDraftsProvider'
+import ResourceOverviewPage from './ResourceOverviewPage'
+import CompletedDraftsProvider from '../completed-drafts/CompletedDraftsProvider'
 
 vi.mock('../resources.api', () => ({
   getResource: vi.fn(),

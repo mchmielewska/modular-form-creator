@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Badge, Button } from '../../../design-system'
-import { BufferedChangesPanel } from './BufferedChangesPanel'
-import { ModuleCard } from './ModuleCard'
-import { ProvisioningPanel } from './ProvisioningPanel'
+import BufferedChangesPanel from './BufferedChangesPanel'
+import ModuleCard from './ModuleCard'
+import ProvisioningPanel from './ProvisioningPanel'
 import type { ResourceOverviewViewProps } from './resource-overview.view-model'
-import { WorkflowProgress } from './WorkflowProgress'
+import WorkflowProgress from './WorkflowProgress'
 
-export function ResourceOverviewView({
+const ResourceOverviewView = ({
   isLoading,
   isError,
   errorMessage,
@@ -18,7 +18,7 @@ export function ResourceOverviewView({
   onSubmitChanges,
   onDiscardChanges,
   onRetry,
-}: ResourceOverviewViewProps) {
+}: ResourceOverviewViewProps) => {
   if (isLoading) return <StatePanel role="status">Loading resource…</StatePanel>
   if (!resource) return <UnavailableState errorMessage={errorMessage} onRetry={onRetry} />
 
@@ -60,10 +60,12 @@ export function ResourceOverviewView({
   )
 }
 
-function UnavailableState({
+export default ResourceOverviewView
+
+const UnavailableState = ({
   errorMessage,
   onRetry,
-}: Pick<ResourceOverviewViewProps, 'errorMessage' | 'onRetry'>) {
+}: Pick<ResourceOverviewViewProps, 'errorMessage' | 'onRetry'>) => {
   return (
     <StatePanel>
       <ErrorTitle>Resource unavailable</ErrorTitle>

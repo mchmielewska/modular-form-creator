@@ -4,10 +4,10 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { theme } from '../../../design-system'
-import { CompletedDraftsProvider } from '../completed-drafts/CompletedDraftsProvider'
+import CompletedDraftsProvider from '../completed-drafts/CompletedDraftsProvider'
 import type { Resource } from '../resource.types'
 import { getResource } from '../resources.api'
-import { ResourceDetailsPage } from './ResourceDetailsPage'
+import ResourceDetailsPage from './ResourceDetailsPage'
 
 vi.mock('../resources.api', () => ({
   getResource: vi.fn(),

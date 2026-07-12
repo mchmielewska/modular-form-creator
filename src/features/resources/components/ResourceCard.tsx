@@ -8,7 +8,7 @@ interface ResourceCardProps {
   onDelete: (resourceId: number) => void
 }
 
-export function ResourceCard({ resource, onDelete }: ResourceCardProps) {
+const ResourceCard = ({ resource, onDelete }: ResourceCardProps) => {
   return (
     <CardSurface variant="elevated">
       <CardTop>
@@ -35,6 +35,8 @@ export function ResourceCard({ resource, onDelete }: ResourceCardProps) {
     </CardSurface>
   )
 }
+
+export default ResourceCard
 
 const CardSurface = styled(Card)`
   display: flex;

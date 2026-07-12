@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
-import { CompletedDraftsProvider } from './CompletedDraftsProvider'
+import CompletedDraftsProvider from './CompletedDraftsProvider'
 import { useCompletedDrafts } from './completedDrafts.model'
 
-function DraftHarness() {
+const DraftHarness = () => {
   const drafts = useCompletedDrafts()
   const owner = drafts.getDraft(12)?.basicInfo?.owner ?? 'none'
 

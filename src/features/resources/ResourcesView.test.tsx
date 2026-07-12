@@ -5,7 +5,7 @@ import { ThemeProvider } from 'styled-components'
 import { describe, expect, it, vi } from 'vitest'
 import { theme } from '../../design-system'
 import type { ResourcesViewProps } from './resources.view-model'
-import { ResourcesView } from './ResourcesView'
+import ResourcesView from './ResourcesView'
 
 const createProps = (): ResourcesViewProps => ({
   resources: [

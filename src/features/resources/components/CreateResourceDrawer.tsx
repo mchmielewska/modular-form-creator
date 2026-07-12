@@ -12,7 +12,7 @@ interface CreateResourceDrawerProps {
   onSubmit: () => void
 }
 
-export function CreateResourceDrawer({
+const CreateResourceDrawer = ({
   isOpen,
   name,
   error,
@@ -20,7 +20,7 @@ export function CreateResourceDrawer({
   onNameChange,
   onClose,
   onSubmit,
-}: CreateResourceDrawerProps) {
+}: CreateResourceDrawerProps) => {
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
     onSubmit()
@@ -44,6 +44,8 @@ export function CreateResourceDrawer({
     </Drawer>
   )
 }
+
+export default CreateResourceDrawer
 
 const CreateForm = styled.form`
   display: grid;

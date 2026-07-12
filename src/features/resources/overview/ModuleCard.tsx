@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Badge, Button, Card } from '../../../design-system'
 import type { ModuleViewModel } from './resource-overview.view-model'
 
-export function ModuleCard({ module }: { module: ModuleViewModel }) {
+const ModuleCard = ({ module }: { module: ModuleViewModel }) => {
   return (
     <ModuleSurface>
       <ModuleHeader>
@@ -27,6 +27,8 @@ export function ModuleCard({ module }: { module: ModuleViewModel }) {
     </ModuleSurface>
   )
 }
+
+export default ModuleCard
 
 const ModuleSurface = styled(Card)`
   display: flex;

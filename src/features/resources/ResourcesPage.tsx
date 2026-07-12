@@ -1,7 +1,9 @@
-import { ResourcesView } from './ResourcesView'
+import ResourcesView from './ResourcesView'
 import { useResourcesController } from './useResourcesController'
 
-export function ResourcesPage() {
+const ResourcesPage = () => {
   const controller = useResourcesController()
   return <ResourcesView {...controller} />
 }
+
+export default ResourcesPage

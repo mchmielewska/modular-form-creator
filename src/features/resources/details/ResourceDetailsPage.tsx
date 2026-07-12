@@ -1,6 +1,8 @@
-import { ResourceDetailsView } from './ResourceDetailsView'
+import ResourceDetailsView from './ResourceDetailsView'
 import { useResourceDetailsController } from './useResourceDetailsController'
 
-export function ResourceDetailsPage() {
+const ResourceDetailsPage = () => {
   return <ResourceDetailsView {...useResourceDetailsController()} />
 }
+
+export default ResourceDetailsPage

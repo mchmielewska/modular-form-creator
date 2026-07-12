@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Card } from '../../../design-system'
 
-export function WorkflowProgress({ completedModules }: { completedModules: number }) {
+const WorkflowProgress = ({ completedModules }: { completedModules: number }) => {
   const percentage = completedModules * 50
   return (
     <ProgressCard variant="elevated">
@@ -18,6 +18,8 @@ export function WorkflowProgress({ completedModules }: { completedModules: numbe
     </ProgressCard>
   )
 }
+
+export default WorkflowProgress
 
 const ProgressCard = styled(Card)`
   margin-bottom: ${({ theme }) => theme.spacing.xl};

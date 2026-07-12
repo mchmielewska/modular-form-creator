@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 import { Button } from '../../design-system'
-import { CreateResourceDrawer } from './components/CreateResourceDrawer'
-import { ResourceCard } from './components/ResourceCard'
-import { ResourcesFilters } from './components/ResourcesFilters'
+import CreateResourceDrawer from './components/CreateResourceDrawer'
+import ResourceCard from './components/ResourceCard'
+import ResourcesFilters from './components/ResourcesFilters'
 import type { ResourcesViewProps } from './resources.view-model'
 
-export function ResourcesView({
+const ResourcesView = ({
   resources,
   isLoading,
   isError,
@@ -23,7 +23,7 @@ export function ResourcesView({
   onCreate,
   onDelete,
   onRetry,
-}: ResourcesViewProps) {
+}: ResourcesViewProps) => {
   return (
     <section>
       <PageHeader>
@@ -89,6 +89,8 @@ export function ResourcesView({
     </section>
   )
 }
+
+export default ResourcesView
 
 const PageHeader = styled.header`
   display: flex;

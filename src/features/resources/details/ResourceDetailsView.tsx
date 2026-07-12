@@ -3,13 +3,13 @@ import styled from 'styled-components'
 import { Badge, Button, Card } from '../../../design-system'
 import type { ResourceDetailsViewProps } from './resource-details.view-model'
 
-export function ResourceDetailsView({
+const ResourceDetailsView = ({
   isLoading,
   isError,
   errorMessage,
   resource,
   onRetry,
-}: ResourceDetailsViewProps) {
+}: ResourceDetailsViewProps) => {
   if (isLoading) return <State role="status">Loading resource details…</State>
   if (!resource)
     return (
@@ -59,6 +59,8 @@ export function ResourceDetailsView({
     </section>
   )
 }
+
+export default ResourceDetailsView
 
 const BackLink = styled(Link)`
   color: ${({ theme }) => theme.colors.primaryStrong};

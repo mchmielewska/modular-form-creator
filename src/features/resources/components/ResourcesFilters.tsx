@@ -11,14 +11,14 @@ interface ResourcesFiltersProps {
   onSortOrderChange: (value: 'asc' | 'desc') => void
 }
 
-export function ResourcesFilters({
+const ResourcesFilters = ({
   name,
   status,
   sortOrder,
   onNameChange,
   onStatusChange,
   onSortOrderChange,
-}: ResourcesFiltersProps) {
+}: ResourcesFiltersProps) => {
   return (
     <Filters aria-label="Resource filters">
       <Input
@@ -52,6 +52,8 @@ export function ResourcesFilters({
     </Filters>
   )
 }
+
+export default ResourcesFilters
 
 const Filters = styled.div`
   display: grid;

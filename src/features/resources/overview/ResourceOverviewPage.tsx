@@ -1,7 +1,9 @@
-import { ResourceOverviewView } from './ResourceOverviewView'
+import ResourceOverviewView from './ResourceOverviewView'
 import { useResourceOverviewController } from './useResourceOverviewController'
 
-export function ResourceOverviewPage() {
+const ResourceOverviewPage = () => {
   const controller = useResourceOverviewController()
   return <ResourceOverviewView {...controller} />
 }
+
+export default ResourceOverviewPage

@@ -1,6 +1,6 @@
 import { Input, Select } from '../../../design-system'
 import type { BasicInfo } from '../resource.types'
-import { ModuleFormLayout } from './ModuleFormLayout'
+import ModuleFormLayout from './ModuleFormLayout'
 import { PRIORITIES, type FieldErrors } from './resource-form.validation'
 
 interface Props {
@@ -17,7 +17,7 @@ interface Props {
   onSubmit: () => void
 }
 
-export function BasicInfoView(props: Props) {
+const BasicInfoView = (props: Props) => {
   return (
     <ModuleFormLayout
       resourceId={props.resourceId}
@@ -72,3 +72,5 @@ export function BasicInfoView(props: Props) {
     </ModuleFormLayout>
   )
 }
+
+export default BasicInfoView

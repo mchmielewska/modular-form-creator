@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState, type ReactNode } from 'react'
 import type { BasicInfo, ProjectDetails } from '../resource.types'
 import { CompletedDraftsContext, type CompletedDraft } from './completedDrafts.model'
 
-export function CompletedDraftsProvider({ children }: { children: ReactNode }) {
+const CompletedDraftsProvider = ({ children }: { children: ReactNode }) => {
   const [drafts, setDrafts] = useState<Record<number, CompletedDraft>>({})
   const getDraft = useCallback((resourceId: number) => drafts[resourceId], [drafts])
   const bufferBasicInfo = useCallback((resourceId: number, data: BasicInfo) => {
@@ -34,3 +34,5 @@ export function CompletedDraftsProvider({ children }: { children: ReactNode }) {
     </CompletedDraftsContext.Provider>
   )
 }
+
+export default CompletedDraftsProvider

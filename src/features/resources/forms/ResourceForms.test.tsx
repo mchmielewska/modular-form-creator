@@ -12,10 +12,10 @@ import {
   updateBasicInfo,
   updateProjectDetails,
 } from '../resources.api'
-import { BasicInfoPage } from './BasicInfoPage'
-import { ProjectDetailsPage } from './ProjectDetailsPage'
-import { CompletedDraftsProvider } from '../completed-drafts/CompletedDraftsProvider'
-import { ResourceOverviewPage } from '../overview/ResourceOverviewPage'
+import BasicInfoPage from './BasicInfoPage'
+import ProjectDetailsPage from './ProjectDetailsPage'
+import CompletedDraftsProvider from '../completed-drafts/CompletedDraftsProvider'
+import ResourceOverviewPage from '../overview/ResourceOverviewPage'
 
 vi.mock('../resources.api', () => ({
   getResource: vi.fn(),

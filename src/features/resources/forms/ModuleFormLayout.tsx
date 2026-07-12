@@ -18,7 +18,7 @@ interface ModuleFormLayoutProps {
   children: ReactNode
 }
 
-export function ModuleFormLayout(props: ModuleFormLayoutProps) {
+const ModuleFormLayout = (props: ModuleFormLayoutProps) => {
   if (props.isLoading) return <State role="status">Loading module…</State>
 
   return (
@@ -58,6 +58,8 @@ export function ModuleFormLayout(props: ModuleFormLayoutProps) {
     </section>
   )
 }
+
+export default ModuleFormLayout
 
 const BackLink = styled(Link)`
   color: ${({ theme }) => theme.colors.primaryStrong};

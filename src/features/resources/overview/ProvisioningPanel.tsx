@@ -11,7 +11,7 @@ interface ProvisioningPanelProps {
   onProvision: () => void
 }
 
-export function ProvisioningPanel(props: ProvisioningPanelProps) {
+const ProvisioningPanel = (props: ProvisioningPanelProps) => {
   return (
     <Panel>
       <div>
@@ -37,6 +37,8 @@ export function ProvisioningPanel(props: ProvisioningPanelProps) {
     </Panel>
   )
 }
+
+export default ProvisioningPanel
 
 const Panel = styled.section`
   display: flex;

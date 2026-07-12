@@ -6,7 +6,7 @@ import { ThemeProvider } from 'styled-components'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { theme } from '../../design-system'
 import type { Resource, ResourceListResponse } from './resource.types'
-import { ResourcesPage } from './ResourcesPage'
+import ResourcesPage from './ResourcesPage'
 import { createResource, deleteResource, listResources } from './resources.api'
 
 vi.mock('./resources.api', () => ({

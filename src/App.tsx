@@ -1,12 +1,12 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import styled from 'styled-components'
-import { ResourcesPage } from './features/resources/ResourcesPage'
-import { BasicInfoPage } from './features/resources/forms/BasicInfoPage'
-import { ProjectDetailsPage } from './features/resources/forms/ProjectDetailsPage'
-import { ResourceDetailsPage } from './features/resources/details/ResourceDetailsPage'
-import { ResourceOverviewPage } from './features/resources/overview/ResourceOverviewPage'
+import ResourcesPage from './features/resources/ResourcesPage'
+import BasicInfoPage from './features/resources/forms/BasicInfoPage'
+import ProjectDetailsPage from './features/resources/forms/ProjectDetailsPage'
+import ResourceDetailsPage from './features/resources/details/ResourceDetailsPage'
+import ResourceOverviewPage from './features/resources/overview/ResourceOverviewPage'
 
-function App() {
+const App = () => {
   return (
     <AppShell>
       <Header>

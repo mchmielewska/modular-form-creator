@@ -7,11 +7,11 @@ interface BufferedChangesPanelProps {
   onDiscard: () => void
 }
 
-export function BufferedChangesPanel({
+const BufferedChangesPanel = ({
   isSubmitting,
   onSubmit,
   onDiscard,
-}: BufferedChangesPanelProps) {
+}: BufferedChangesPanelProps) => {
   return (
     <Panel>
       <div>
@@ -30,6 +30,8 @@ export function BufferedChangesPanel({
     </Panel>
   )
 }
+
+export default BufferedChangesPanel
 
 const Panel = styled.section`
   display: flex;

@@ -1,6 +1,8 @@
-import { ProjectDetailsView } from './ProjectDetailsView'
+import ProjectDetailsView from './ProjectDetailsView'
 import { useProjectDetailsController } from './useProjectDetailsController'
 
-export function ProjectDetailsPage() {
+const ProjectDetailsPage = () => {
   return <ProjectDetailsView {...useProjectDetailsController()} />
 }
+
+export default ProjectDetailsPage
