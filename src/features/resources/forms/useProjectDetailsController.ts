@@ -4,6 +4,7 @@ import { isBasicInfoComplete } from '../resource.rules'
 import type { ProjectDetails } from '../resource.types'
 import { useResource, useUpdateProjectDetails } from '../resources.queries'
 import { validateProjectDetails, type FieldErrors } from './resource-form.validation'
+import { useCompletedDrafts } from '../completed-drafts/completedDrafts.model'
 
 const EMPTY: ProjectDetails = { projectName: '', budget: '', category: '', options: [] }
 
@@ -12,9 +13,11 @@ export const useProjectDetailsController = () => {
   const navigate = useNavigate()
   const query = useResource(resourceId)
   const mutation = useUpdateProjectDetails()
+  const completedDrafts = useCompletedDrafts()
   const [draft, setDraft] = useState<ProjectDetails | null>(null)
   const [errors, setErrors] = useState<FieldErrors>({})
-  const data = draft ?? query.data?.projectDetails ?? EMPTY
+  const buffered = completedDrafts.getDraft(resourceId)?.projectDetails
+  const data = draft ?? buffered ?? query.data?.projectDetails ?? EMPTY
   const isLocked = query.data?.status === 'draft' && !isBasicInfoComplete(query.data.basicInfo)
   const isCompleted = query.data?.status === 'completed'
 
@@ -23,10 +26,15 @@ export const useProjectDetailsController = () => {
     setErrors((current) => ({ ...current, [field]: '' }))
   }
   const onSubmit = async () => {
-    if (isLocked || isCompleted) return
+    if (isLocked) return
     const nextErrors = validateProjectDetails(data)
     setErrors(nextErrors)
     if (Object.keys(nextErrors).length) return
+    if (isCompleted) {
+      completedDrafts.bufferProjectDetails(resourceId, data)
+      navigate(`/resources/${resourceId}`)
+      return
+    }
     try {
       await mutation.mutateAsync({ resourceId, data })
       navigate(`/resources/${resourceId}`)
@@ -36,8 +44,10 @@ export const useProjectDetailsController = () => {
   return {
     resourceId, data, errors,
     isLoading: query.isPending,
-    isReadOnly: Boolean(isLocked || isCompleted),
+    isReadOnly: Boolean(isLocked),
     readOnlyMessage: isLocked ? 'Complete Basic Info before editing Project Details.' : undefined,
+    noticeMessage: isCompleted ? 'Changes are stored temporarily until you submit them from the overview.' : undefined,
+    submitLabel: isCompleted ? 'Save draft changes' : 'Save and continue',
     isSubmitting: mutation.isPending,
     errorMessage: mutation.error instanceof Error ? mutation.error.message : '',
     onChange,

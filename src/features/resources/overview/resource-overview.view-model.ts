@@ -22,8 +22,12 @@ export interface ResourceOverviewViewProps {
     detailsPath: string
     canProvision: boolean
     provisioningHint: string
+    hasBufferedChanges: boolean
   }
   isProvisioning: boolean
+  isSubmittingChanges: boolean
   onProvision: () => void
+  onSubmitChanges: () => void
+  onDiscardChanges: () => void
   onRetry: () => void
 }

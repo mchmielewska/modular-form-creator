@@ -4,6 +4,7 @@ import type {
   Resource,
   ResourceListResponse,
   ResourceStatus,
+  ResourceUpdatePayload,
 } from './resource.types'
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:5001/api'
@@ -77,4 +78,13 @@ export const updateProjectDetails = (
   request<Resource>(`/resources/${resourceId}/project-details`, {
     method: 'PATCH',
     body: JSON.stringify(projectDetails),
+  })
+
+export const replaceCompletedResource = (
+  resourceId: number,
+  data: ResourceUpdatePayload,
+) =>
+  request<Resource>(`/resources/${resourceId}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
   })

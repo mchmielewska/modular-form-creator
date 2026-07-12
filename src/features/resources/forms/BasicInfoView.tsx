@@ -10,6 +10,8 @@ interface Props {
   isLoading: boolean
   isReadOnly: boolean
   isSubmitting: boolean
+  noticeMessage?: string
+  submitLabel?: string
   errorMessage: string
   onChange: (field: keyof BasicInfo, value: string) => void
   onSubmit: () => void

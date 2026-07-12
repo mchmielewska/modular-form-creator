@@ -12,6 +12,8 @@ interface ModuleFormLayoutProps {
   isSubmitting: boolean
   isReadOnly: boolean
   readOnlyMessage?: string
+  noticeMessage?: string
+  submitLabel?: string
   onSubmit: () => void
   children: ReactNode
 }
@@ -29,6 +31,7 @@ export function ModuleFormLayout(props: ModuleFormLayoutProps) {
       {props.isReadOnly ? (
         <Notice>{props.readOnlyMessage ?? 'Completed-resource editing will be enabled in the next reviewed step.'}</Notice>
       ) : null}
+      {props.noticeMessage ? <Notice>{props.noticeMessage}</Notice> : null}
       {props.errorMessage ? <Error role="alert">{props.errorMessage}</Error> : null}
       <FormCard>
         <Form
@@ -40,7 +43,7 @@ export function ModuleFormLayout(props: ModuleFormLayoutProps) {
           {props.children}
           {!props.isReadOnly ? (
             <Button type="submit" size="large" disabled={props.isSubmitting}>
-              {props.isSubmitting ? 'Saving…' : 'Save and continue'}
+              {props.isSubmitting ? 'Saving…' : (props.submitLabel ?? 'Save and continue')}
             </Button>
           ) : null}
         </Form>

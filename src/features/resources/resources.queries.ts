@@ -5,11 +5,12 @@ import {
   getResource,
   listResources,
   provisionResource,
+  replaceCompletedResource,
   updateBasicInfo,
   updateProjectDetails,
   type ListResourcesParams,
 } from './resources.api'
-import type { BasicInfo, ProjectDetails } from './resource.types'
+import type { BasicInfo, ProjectDetails, ResourceUpdatePayload } from './resource.types'
 
 export const resourceKeys = {
   all: ['resources'] as const,
@@ -79,6 +80,15 @@ export const useUpdateProjectDetails = () => {
   return useMutation({
     mutationFn: ({ resourceId, data }: { resourceId: number; data: ProjectDetails }) =>
       updateProjectDetails(resourceId, data),
+    onSuccess: (resource) => updateResourceCache(queryClient, resource),
+  })
+}
+
+export const useReplaceCompletedResource = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ resourceId, data }: { resourceId: number; data: ResourceUpdatePayload }) =>
+      replaceCompletedResource(resourceId, data),
     onSuccess: (resource) => updateResourceCache(queryClient, resource),
   })
 }

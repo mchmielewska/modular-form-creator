@@ -5,6 +5,7 @@ import {
   getResource,
   listResources,
   provisionResource,
+  replaceCompletedResource,
   updateBasicInfo,
   updateProjectDetails,
 } from './resources.api'
@@ -109,5 +110,16 @@ describe('resources API', () => {
 
     expect(fetchMock).toHaveBeenNthCalledWith(1, 'http://localhost:5001/api/resources/8/basic-info', expect.objectContaining({ method: 'PATCH', body: JSON.stringify(basicInfo) }))
     expect(fetchMock).toHaveBeenNthCalledWith(2, 'http://localhost:5001/api/resources/8/project-details', expect.objectContaining({ method: 'PATCH', body: JSON.stringify(projectDetails) }))
+  })
+
+  it('persists completed changes through the full PUT endpoint', async () => {
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(response({ resourceId: 8 }))
+    const data = {
+      name: 'Locked',
+      basicInfo: { resourceName: 'Locked', owner: 'Ada', email: 'a@b.com', description: 'Test', priority: 'high' },
+      projectDetails: { projectName: 'Project', budget: '100', category: 'internal', options: ['FE devs'] },
+    }
+    await replaceCompletedResource(8, data)
+    expect(fetchMock).toHaveBeenCalledWith('http://localhost:5001/api/resources/8', expect.objectContaining({ method: 'PUT', body: JSON.stringify(data) }))
   })
 })

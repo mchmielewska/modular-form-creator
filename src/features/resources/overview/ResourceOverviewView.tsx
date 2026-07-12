@@ -10,7 +10,10 @@ export function ResourceOverviewView({
   errorMessage,
   resource,
   isProvisioning,
+  isSubmittingChanges,
   onProvision,
+  onSubmitChanges,
+  onDiscardChanges,
   onRetry,
 }: ResourceOverviewViewProps) {
   if (isLoading) return <StatePanel role="status">Loading resource…</StatePanel>
@@ -63,6 +66,22 @@ export function ResourceOverviewView({
           <ModuleCard key={module.title} module={module} />
         ))}
       </ModulesGrid>
+
+      {resource.hasBufferedChanges ? (
+        <PendingPanel>
+          <div>
+            <SectionLabel>Temporary changes</SectionLabel>
+            <ActionTitle>Draft edits are ready to submit</ActionTitle>
+            <ActionHint>These changes exist only in memory and will be lost on refresh.</ActionHint>
+          </div>
+          <ActionButtons>
+            <Button type="button" variant="ghost" onClick={onDiscardChanges}>Discard changes</Button>
+            <Button type="button" onClick={onSubmitChanges} disabled={isSubmittingChanges}>
+              {isSubmittingChanges ? 'Submitting…' : 'Submit changes'}
+            </Button>
+          </ActionButtons>
+        </PendingPanel>
+      ) : null}
 
       <ActionPanel>
         <div>
@@ -198,6 +217,11 @@ const ActionPanel = styled.div`
     align-items: stretch;
     flex-direction: column;
   }
+`
+
+const PendingPanel = styled(ActionPanel)`
+  border: 1px solid ${({ theme }) => theme.colors.accent};
+  background: ${({ theme }) => theme.colors.accentSoft};
 `
 
 const ActionTitle = styled.h2`

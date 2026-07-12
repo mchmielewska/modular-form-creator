@@ -6,13 +6,15 @@ import { ThemeProvider } from 'styled-components'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { theme } from '../../../design-system'
 import type { Resource } from '../resource.types'
-import { getResource, updateBasicInfo, updateProjectDetails } from '../resources.api'
+import { getResource, replaceCompletedResource, updateBasicInfo, updateProjectDetails } from '../resources.api'
 import { BasicInfoPage } from './BasicInfoPage'
 import { ProjectDetailsPage } from './ProjectDetailsPage'
+import { CompletedDraftsProvider } from '../completed-drafts/CompletedDraftsProvider'
+import { ResourceOverviewPage } from '../overview/ResourceOverviewPage'
 
 vi.mock('../resources.api', () => ({
   getResource: vi.fn(), updateBasicInfo: vi.fn(), updateProjectDetails: vi.fn(),
-  listResources: vi.fn(), createResource: vi.fn(), deleteResource: vi.fn(), provisionResource: vi.fn(),
+  listResources: vi.fn(), createResource: vi.fn(), deleteResource: vi.fn(), provisionResource: vi.fn(), replaceCompletedResource: vi.fn(),
 }))
 
 const draft: Resource = {
@@ -24,21 +26,23 @@ const draft: Resource = {
 const renderForm = (path: string, element: React.ReactNode) => {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } })
   return render(
-    <ThemeProvider theme={theme}><QueryClientProvider client={client}>
+    <ThemeProvider theme={theme}><QueryClientProvider client={client}><CompletedDraftsProvider>
       <MemoryRouter initialEntries={[path]}><Routes>
         <Route path="/resources/:resourceId/basic-info" element={element} />
         <Route path="/resources/:resourceId/project-details" element={element} />
         <Route path="/resources/:resourceId" element={<h1>Overview</h1>} />
       </Routes></MemoryRouter>
-    </QueryClientProvider></ThemeProvider>,
+    </CompletedDraftsProvider></QueryClientProvider></ThemeProvider>,
   )
 }
 
 describe('draft resource forms', () => {
   beforeEach(() => {
+    vi.clearAllMocks()
     vi.mocked(getResource).mockResolvedValue(draft)
     vi.mocked(updateBasicInfo).mockImplementation(async (_id, data) => ({ ...draft, basicInfo: data }))
     vi.mocked(updateProjectDetails).mockImplementation(async (_id, data) => ({ ...draft, projectDetails: data }))
+    vi.mocked(replaceCompletedResource).mockImplementation(async (_id, data) => ({ ...draft, ...data, status: 'completed' }))
   })
 
   it('validates and saves Basic Info without allowing name changes', async () => {
@@ -73,5 +77,26 @@ describe('draft resource forms', () => {
     await user.click(screen.getByRole('button', { name: 'Save and continue' }))
 
     await waitFor(() => expect(updateProjectDetails).toHaveBeenCalledWith(12, expect.objectContaining({ budget: '1000', category: 'internal', options: ['FE devs'] })))
+  })
+
+  it('buffers completed edits and persists them only after overview submission', async () => {
+    const completed = { ...draft, status: 'completed' as const, basicInfo: { resourceName: 'Locked name', owner: 'Ada', email: 'ada@example.com', description: 'Ready', priority: 'high' }, projectDetails: { projectName: 'Project', budget: '100', category: 'internal', options: ['FE devs'] } }
+    vi.mocked(getResource).mockResolvedValue(completed)
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } })
+    const user = userEvent.setup()
+    render(<ThemeProvider theme={theme}><QueryClientProvider client={client}><CompletedDraftsProvider><MemoryRouter initialEntries={['/resources/12/basic-info']}><Routes>
+      <Route path="/resources/:resourceId/basic-info" element={<BasicInfoPage />} />
+      <Route path="/resources/:resourceId" element={<ResourceOverviewPage />} />
+    </Routes></MemoryRouter></CompletedDraftsProvider></QueryClientProvider></ThemeProvider>)
+
+    const owner = await screen.findByRole('textbox', { name: 'Owner' })
+    await user.clear(owner)
+    await user.type(owner, 'Grace Hopper')
+    await user.click(screen.getByRole('button', { name: 'Save draft changes' }))
+
+    expect(updateBasicInfo).not.toHaveBeenCalled()
+    expect(replaceCompletedResource).not.toHaveBeenCalled()
+    await user.click(await screen.findByRole('button', { name: 'Submit changes' }))
+    await waitFor(() => expect(replaceCompletedResource).toHaveBeenCalledWith(12, expect.objectContaining({ basicInfo: expect.objectContaining({ owner: 'Grace Hopper' }) })))
   })
 })

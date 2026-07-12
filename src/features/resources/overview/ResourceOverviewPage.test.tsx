@@ -8,6 +8,7 @@ import { theme } from '../../../design-system'
 import type { Resource } from '../resource.types'
 import { getResource, provisionResource } from '../resources.api'
 import { ResourceOverviewPage } from './ResourceOverviewPage'
+import { CompletedDraftsProvider } from '../completed-drafts/CompletedDraftsProvider'
 
 vi.mock('../resources.api', () => ({
   getResource: vi.fn(),
@@ -15,6 +16,7 @@ vi.mock('../resources.api', () => ({
   listResources: vi.fn(),
   createResource: vi.fn(),
   deleteResource: vi.fn(),
+  replaceCompletedResource: vi.fn(),
 }))
 
 const completeDraft: Resource = {
@@ -48,11 +50,13 @@ const renderPage = () => {
   return render(
     <ThemeProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
+        <CompletedDraftsProvider>
         <MemoryRouter initialEntries={['/resources/12']}>
           <Routes>
             <Route path="/resources/:resourceId" element={<ResourceOverviewPage />} />
           </Routes>
         </MemoryRouter>
+        </CompletedDraftsProvider>
       </QueryClientProvider>
     </ThemeProvider>,
   )
