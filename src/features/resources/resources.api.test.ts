@@ -5,6 +5,8 @@ import {
   getResource,
   listResources,
   provisionResource,
+  updateBasicInfo,
+  updateProjectDetails,
 } from './resources.api'
 
 const response = (body: unknown, ok = true) =>
@@ -95,5 +97,17 @@ describe('resources API', () => {
       'http://localhost:5001/api/resources/8/provisioning',
       expect.objectContaining({ method: 'PATCH' }),
     )
+  })
+
+  it('updates draft modules through separate PATCH endpoints', async () => {
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(response({ resourceId: 8 }))
+    const basicInfo = { resourceName: 'Locked', owner: 'Ada', email: 'a@b.com', description: 'Test', priority: 'high' }
+    const projectDetails = { projectName: 'Project', budget: '100', category: 'internal', options: ['FE devs'] }
+
+    await updateBasicInfo(8, basicInfo)
+    await updateProjectDetails(8, projectDetails)
+
+    expect(fetchMock).toHaveBeenNthCalledWith(1, 'http://localhost:5001/api/resources/8/basic-info', expect.objectContaining({ method: 'PATCH', body: JSON.stringify(basicInfo) }))
+    expect(fetchMock).toHaveBeenNthCalledWith(2, 'http://localhost:5001/api/resources/8/project-details', expect.objectContaining({ method: 'PATCH', body: JSON.stringify(projectDetails) }))
   })
 })

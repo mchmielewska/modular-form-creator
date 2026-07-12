@@ -5,8 +5,11 @@ import {
   getResource,
   listResources,
   provisionResource,
+  updateBasicInfo,
+  updateProjectDetails,
   type ListResourcesParams,
 } from './resources.api'
+import type { BasicInfo, ProjectDetails } from './resource.types'
 
 export const resourceKeys = {
   all: ['resources'] as const,
@@ -58,4 +61,32 @@ export const useProvisionResource = () => {
       return queryClient.invalidateQueries({ queryKey: resourceKeys.lists() })
     },
   })
+}
+
+export const useUpdateBasicInfo = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: ({ resourceId, data }: { resourceId: number; data: BasicInfo }) =>
+      updateBasicInfo(resourceId, data),
+    onSuccess: (resource) => updateResourceCache(queryClient, resource),
+  })
+}
+
+export const useUpdateProjectDetails = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: ({ resourceId, data }: { resourceId: number; data: ProjectDetails }) =>
+      updateProjectDetails(resourceId, data),
+    onSuccess: (resource) => updateResourceCache(queryClient, resource),
+  })
+}
+
+const updateResourceCache = (
+  queryClient: ReturnType<typeof useQueryClient>,
+  resource: Awaited<ReturnType<typeof updateBasicInfo>>,
+) => {
+  queryClient.setQueryData(resourceKeys.detail(resource.resourceId), resource)
+  return queryClient.invalidateQueries({ queryKey: resourceKeys.lists() })
 }

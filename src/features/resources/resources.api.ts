@@ -1,4 +1,10 @@
-import type { Resource, ResourceListResponse, ResourceStatus } from './resource.types'
+import type {
+  BasicInfo,
+  ProjectDetails,
+  Resource,
+  ResourceListResponse,
+  ResourceStatus,
+} from './resource.types'
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:5001/api'
 
@@ -57,3 +63,18 @@ export const getResource = (resourceId: number, signal?: AbortSignal) =>
 
 export const provisionResource = (resourceId: number) =>
   request<Resource>(`/resources/${resourceId}/provisioning`, { method: 'PATCH' })
+
+export const updateBasicInfo = (resourceId: number, basicInfo: BasicInfo) =>
+  request<Resource>(`/resources/${resourceId}/basic-info`, {
+    method: 'PATCH',
+    body: JSON.stringify(basicInfo),
+  })
+
+export const updateProjectDetails = (
+  resourceId: number,
+  projectDetails: ProjectDetails,
+) =>
+  request<Resource>(`/resources/${resourceId}/project-details`, {
+    method: 'PATCH',
+    body: JSON.stringify(projectDetails),
+  })

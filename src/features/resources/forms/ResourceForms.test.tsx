@@ -1,0 +1,77 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { MemoryRouter, Route, Routes } from 'react-router-dom'
+import { ThemeProvider } from 'styled-components'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { theme } from '../../../design-system'
+import type { Resource } from '../resource.types'
+import { getResource, updateBasicInfo, updateProjectDetails } from '../resources.api'
+import { BasicInfoPage } from './BasicInfoPage'
+import { ProjectDetailsPage } from './ProjectDetailsPage'
+
+vi.mock('../resources.api', () => ({
+  getResource: vi.fn(), updateBasicInfo: vi.fn(), updateProjectDetails: vi.fn(),
+  listResources: vi.fn(), createResource: vi.fn(), deleteResource: vi.fn(), provisionResource: vi.fn(),
+}))
+
+const draft: Resource = {
+  _id: 'id', resourceId: 12, name: 'Locked name', status: 'draft',
+  basicInfo: { resourceName: 'Locked name', owner: '', email: '', description: '', priority: '' },
+  projectDetails: { projectName: '', budget: '', category: '', options: [] },
+}
+
+const renderForm = (path: string, element: React.ReactNode) => {
+  const client = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } })
+  return render(
+    <ThemeProvider theme={theme}><QueryClientProvider client={client}>
+      <MemoryRouter initialEntries={[path]}><Routes>
+        <Route path="/resources/:resourceId/basic-info" element={element} />
+        <Route path="/resources/:resourceId/project-details" element={element} />
+        <Route path="/resources/:resourceId" element={<h1>Overview</h1>} />
+      </Routes></MemoryRouter>
+    </QueryClientProvider></ThemeProvider>,
+  )
+}
+
+describe('draft resource forms', () => {
+  beforeEach(() => {
+    vi.mocked(getResource).mockResolvedValue(draft)
+    vi.mocked(updateBasicInfo).mockImplementation(async (_id, data) => ({ ...draft, basicInfo: data }))
+    vi.mocked(updateProjectDetails).mockImplementation(async (_id, data) => ({ ...draft, projectDetails: data }))
+  })
+
+  it('validates and saves Basic Info without allowing name changes', async () => {
+    const user = userEvent.setup()
+    renderForm('/resources/12/basic-info', <BasicInfoPage />)
+    const name = await screen.findByRole('textbox', { name: 'Resource name' })
+    expect(name).toBeDisabled()
+    await user.type(screen.getByRole('textbox', { name: 'Owner' }), 'Ada Lovelace')
+    await user.type(screen.getByRole('textbox', { name: 'Email' }), 'ada@example.com')
+    await user.type(screen.getByRole('textbox', { name: 'Description' }), 'Test resource')
+    await user.selectOptions(screen.getByRole('combobox', { name: 'Priority' }), 'high')
+    await user.click(screen.getByRole('button', { name: 'Save and continue' }))
+
+    await waitFor(() => expect(updateBasicInfo).toHaveBeenCalledWith(12, expect.objectContaining({ resourceName: 'Locked name', owner: 'Ada Lovelace', priority: 'high' })))
+    expect(await screen.findByRole('heading', { name: 'Overview' })).toBeVisible()
+  })
+
+  it('keeps Project Details locked until Basic Info is complete', async () => {
+    renderForm('/resources/12/project-details', <ProjectDetailsPage />)
+    expect(await screen.findByText('Complete Basic Info before editing Project Details.')).toBeVisible()
+    expect(screen.queryByRole('button', { name: 'Save and continue' })).not.toBeInTheDocument()
+  })
+
+  it('saves Project Details through its separate endpoint after unlock', async () => {
+    vi.mocked(getResource).mockResolvedValue({ ...draft, basicInfo: { resourceName: 'Locked name', owner: 'Ada', email: 'ada@example.com', description: 'Ready', priority: 'high' } })
+    const user = userEvent.setup()
+    renderForm('/resources/12/project-details', <ProjectDetailsPage />)
+    await user.type(await screen.findByRole('textbox', { name: 'Project name' }), 'Project One')
+    await user.type(screen.getByRole('textbox', { name: 'Budget' }), '1000')
+    await user.selectOptions(screen.getByRole('combobox', { name: 'Category' }), 'internal')
+    await user.click(screen.getByRole('checkbox', { name: 'FE devs' }))
+    await user.click(screen.getByRole('button', { name: 'Save and continue' }))
+
+    await waitFor(() => expect(updateProjectDetails).toHaveBeenCalledWith(12, expect.objectContaining({ budget: '1000', category: 'internal', options: ['FE devs'] })))
+  })
+})

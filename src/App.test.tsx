@@ -24,8 +24,6 @@ const renderRoute = (route: string) => {
 
 describe('resource routes', () => {
   it.each([
-    ['/resources/1/basic-info', 'Basic Info'],
-    ['/resources/1/project-details', 'Project Details'],
     ['/resources/1/details', 'Resource details'],
   ])('keeps %s inside the selected resource workflow', (route, heading) => {
     renderRoute(route)
