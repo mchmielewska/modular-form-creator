@@ -8,7 +8,11 @@ export function ModuleCard({ module }: { module: ModuleViewModel }) {
     <ModuleSurface>
       <ModuleHeader>
         <ModuleTitle>{module.title}</ModuleTitle>
-        <Badge variant={module.isComplete ? 'success' : module.isLocked ? 'neutral' : 'warning'}>
+        <Badge
+          variant={
+            module.isComplete ? 'success' : module.isLocked ? 'neutral' : 'warning'
+          }
+        >
           {module.statusLabel}
         </Badge>
       </ModuleHeader>

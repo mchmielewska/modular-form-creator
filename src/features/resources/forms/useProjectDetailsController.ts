@@ -18,7 +18,8 @@ export const useProjectDetailsController = () => {
   const [errors, setErrors] = useState<FieldErrors>({})
   const buffered = completedDrafts.getDraft(resourceId)?.projectDetails
   const data = draft ?? buffered ?? query.data?.projectDetails ?? EMPTY
-  const isLocked = query.data?.status === 'draft' && !isBasicInfoComplete(query.data.basicInfo)
+  const isLocked =
+    query.data?.status === 'draft' && !isBasicInfoComplete(query.data.basicInfo)
   const isCompleted = query.data?.status === 'completed'
 
   const onChange = (field: keyof ProjectDetails, value: string | string[]) => {
@@ -38,26 +39,34 @@ export const useProjectDetailsController = () => {
     try {
       await mutation.mutateAsync({ resourceId, data })
       navigate(`/resources/${resourceId}`)
-    } catch { /* mutation state provides the message */ }
+    } catch {
+      /* mutation state provides the message */
+    }
   }
 
   return {
-    resourceId, data, errors,
+    resourceId,
+    data,
+    errors,
     isLoading: query.isPending,
     isReadOnly: Boolean(isLocked || query.isError),
-    readOnlyMessage: query.error instanceof Error
-      ? query.error.message
-      : isLocked
-        ? 'Complete Basic Info before editing Project Details.'
-        : undefined,
-    noticeMessage: isCompleted ? 'Changes are stored temporarily until you submit them from the overview.' : undefined,
+    readOnlyMessage:
+      query.error instanceof Error
+        ? query.error.message
+        : isLocked
+          ? 'Complete Basic Info before editing Project Details.'
+          : undefined,
+    noticeMessage: isCompleted
+      ? 'Changes are stored temporarily until you submit them from the overview.'
+      : undefined,
     submitLabel: isCompleted ? 'Save draft changes' : 'Save and continue',
     isSubmitting: mutation.isPending,
-    errorMessage: mutation.error instanceof Error
-      ? mutation.error.message
-      : query.error instanceof Error
-        ? query.error.message
-        : '',
+    errorMessage:
+      mutation.error instanceof Error
+        ? mutation.error.message
+        : query.error instanceof Error
+          ? query.error.message
+          : '',
     onChange,
     onSubmit: () => void onSubmit(),
   }

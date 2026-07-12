@@ -23,13 +23,18 @@ export function ModuleFormLayout(props: ModuleFormLayoutProps) {
 
   return (
     <section>
-      <BackLink to={`/resources/${props.resourceId}`}>← Back to resource overview</BackLink>
+      <BackLink to={`/resources/${props.resourceId}`}>
+        ← Back to resource overview
+      </BackLink>
       <Header>
         <h1>{props.title}</h1>
         <p>{props.description}</p>
       </Header>
       {props.isReadOnly ? (
-        <Notice>{props.readOnlyMessage ?? 'Completed-resource editing will be enabled in the next reviewed step.'}</Notice>
+        <Notice>
+          {props.readOnlyMessage ??
+            'Completed-resource editing will be enabled in the next reviewed step.'}
+        </Notice>
       ) : null}
       {props.noticeMessage ? <Notice>{props.noticeMessage}</Notice> : null}
       {props.errorMessage ? <Error role="alert">{props.errorMessage}</Error> : null}
@@ -43,7 +48,9 @@ export function ModuleFormLayout(props: ModuleFormLayoutProps) {
           {props.children}
           {!props.isReadOnly ? (
             <Button type="submit" size="large" disabled={props.isSubmitting}>
-              {props.isSubmitting ? 'Saving…' : (props.submitLabel ?? 'Save and continue')}
+              {props.isSubmitting
+                ? 'Saving…'
+                : (props.submitLabel ?? 'Save and continue')}
             </Button>
           ) : null}
         </Form>
@@ -59,10 +66,17 @@ const BackLink = styled(Link)`
 `
 const Header = styled.header`
   margin: ${({ theme }) => `${theme.spacing.lg} 0 ${theme.spacing.xl}`};
-  h1 { margin: 0; color: ${({ theme }) => theme.colors.inkStrong}; }
-  p { color: ${({ theme }) => theme.colors.inkMuted}; }
+  h1 {
+    margin: 0;
+    color: ${({ theme }) => theme.colors.inkStrong};
+  }
+  p {
+    color: ${({ theme }) => theme.colors.inkMuted};
+  }
 `
-const FormCard = styled(Card)`max-width: 760px;`
+const FormCard = styled(Card)`
+  max-width: 760px;
+`
 const Form = styled.form`
   display: grid;
   gap: ${({ theme }) => theme.spacing.lg};
@@ -72,5 +86,9 @@ const Notice = styled.p`
   border-radius: ${({ theme }) => theme.radii.md};
   background: ${({ theme }) => theme.colors.accentSoft};
 `
-const Error = styled.p`color: ${({ theme }) => theme.colors.warning};`
-const State = styled.div`padding: ${({ theme }) => theme.spacing.xl};`
+const Error = styled.p`
+  color: ${({ theme }) => theme.colors.warning};
+`
+const State = styled.div`
+  padding: ${({ theme }) => theme.spacing.xl};
+`

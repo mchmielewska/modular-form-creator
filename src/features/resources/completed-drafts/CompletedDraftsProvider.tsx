@@ -28,5 +28,9 @@ export function CompletedDraftsProvider({ children }: { children: ReactNode }) {
     () => ({ getDraft, bufferBasicInfo, bufferProjectDetails, clearDraft }),
     [bufferBasicInfo, bufferProjectDetails, clearDraft, getDraft],
   )
-  return <CompletedDraftsContext.Provider value={value}>{children}</CompletedDraftsContext.Provider>
+  return (
+    <CompletedDraftsContext.Provider value={value}>
+      {children}
+    </CompletedDraftsContext.Provider>
+  )
 }

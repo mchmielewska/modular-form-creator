@@ -17,11 +17,15 @@ export const CompletedDraftsContext = createContext<CompletedDraftsValue | null>
 
 export const useCompletedDrafts = () => {
   const context = useContext(CompletedDraftsContext)
-  if (!context) throw new Error('useCompletedDrafts must be used within CompletedDraftsProvider')
+  if (!context)
+    throw new Error('useCompletedDrafts must be used within CompletedDraftsProvider')
   return context
 }
 
-export const mergeCompletedDraft = (resource: Resource, draft?: CompletedDraft): Resource => ({
+export const mergeCompletedDraft = (
+  resource: Resource,
+  draft?: CompletedDraft,
+): Resource => ({
   ...resource,
   basicInfo: draft?.basicInfo ?? resource.basicInfo,
   projectDetails: draft?.projectDetails ?? resource.projectDetails,

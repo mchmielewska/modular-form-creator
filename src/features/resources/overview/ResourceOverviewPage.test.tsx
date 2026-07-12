@@ -51,11 +51,11 @@ const renderPage = () => {
     <ThemeProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
         <CompletedDraftsProvider>
-        <MemoryRouter initialEntries={['/resources/12']}>
-          <Routes>
-            <Route path="/resources/:resourceId" element={<ResourceOverviewPage />} />
-          </Routes>
-        </MemoryRouter>
+          <MemoryRouter initialEntries={['/resources/12']}>
+            <Routes>
+              <Route path="/resources/:resourceId" element={<ResourceOverviewPage />} />
+            </Routes>
+          </MemoryRouter>
         </CompletedDraftsProvider>
       </QueryClientProvider>
     </ThemeProvider>,
@@ -96,7 +96,9 @@ describe('ResourceOverviewPage', () => {
       await screen.findByRole('button', { name: 'Complete Basic Info first' }),
     ).toBeDisabled()
     expect(screen.getByRole('button', { name: 'Provision resource' })).toBeDisabled()
-    expect(screen.queryByRole('link', { name: 'Complete Project Details' })).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('link', { name: 'Complete Project Details' }),
+    ).not.toBeInTheDocument()
   })
 
   it('provisions through the mutation and removes the provisioning action', async () => {
@@ -107,16 +109,24 @@ describe('ResourceOverviewPage', () => {
     await user.click(screen.getByRole('button', { name: 'Provision resource' }))
 
     await waitFor(() => expect(provisionResource).toHaveBeenCalledWith(12))
-    expect(await screen.findByText('This resource has already been provisioned.')).toBeVisible()
-    expect(screen.queryByRole('button', { name: 'Provision resource' })).not.toBeInTheDocument()
+    expect(
+      await screen.findByText('This resource has already been provisioned.'),
+    ).toBeVisible()
+    expect(
+      screen.queryByRole('button', { name: 'Provision resource' }),
+    ).not.toBeInTheDocument()
   })
 
   it('does not offer reprovisioning for completed resources', async () => {
     vi.mocked(getResource).mockResolvedValue({ ...completeDraft, status: 'completed' })
     renderPage()
 
-    expect(await screen.findByText('This resource has already been provisioned.')).toBeVisible()
-    expect(screen.queryByRole('button', { name: 'Provision resource' })).not.toBeInTheDocument()
+    expect(
+      await screen.findByText('This resource has already been provisioned.'),
+    ).toBeVisible()
+    expect(
+      screen.queryByRole('button', { name: 'Provision resource' }),
+    ).not.toBeInTheDocument()
   })
 
   it('shows the backend error and retries the detail query', async () => {

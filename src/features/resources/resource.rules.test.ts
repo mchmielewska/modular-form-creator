@@ -30,9 +30,9 @@ const completeResource: Resource = {
 describe('resource completion rules', () => {
   it('requires every Basic Info field', () => {
     expect(isBasicInfoComplete(completeResource.basicInfo)).toBe(true)
-    expect(
-      isBasicInfoComplete({ ...completeResource.basicInfo, owner: '  ' }),
-    ).toBe(false)
+    expect(isBasicInfoComplete({ ...completeResource.basicInfo, owner: '  ' })).toBe(
+      false,
+    )
   })
 
   it('requires every Project Details field and at least one option', () => {

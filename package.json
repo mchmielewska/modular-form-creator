@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "format": "prettier --write src/App.tsx src/main.tsx src/App.css src/index.css src/styled.d.ts src/features src/lib src/test vite.config.ts vitest.config.ts eslint.config.js package.json",
+    "format:check": "prettier --check src/App.tsx src/main.tsx src/App.css src/index.css src/styled.d.ts src/features src/lib src/test vite.config.ts vitest.config.ts eslint.config.js package.json",
     "test": "vitest run --config vitest.config.ts",
     "test:watch": "vitest --config vitest.config.ts",
     "preview": "vite preview",

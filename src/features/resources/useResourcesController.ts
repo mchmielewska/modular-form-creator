@@ -3,11 +3,7 @@ import { isBasicInfoComplete, isProjectDetailsComplete } from './resource.rules'
 import { getErrorMessage } from './resource.errors'
 import type { ResourceStatus } from './resource.types'
 import type { ResourcesViewProps } from './resources.view-model'
-import {
-  useCreateResource,
-  useDeleteResource,
-  useResources,
-} from './resources.queries'
+import { useCreateResource, useDeleteResource, useResources } from './resources.queries'
 
 export const useResourcesController = (): ResourcesViewProps => {
   const [nameFilter, setNameFilter] = useState('')
@@ -57,8 +53,13 @@ export const useResourcesController = (): ResourcesViewProps => {
   }
 
   const remove = async (resourceId: number) => {
-    const resource = resourcesQuery.data?.items.find((item) => item.resourceId === resourceId)
-    if (!resource || !window.confirm(`Delete “${resource.name}”? This cannot be undone.`)) {
+    const resource = resourcesQuery.data?.items.find(
+      (item) => item.resourceId === resourceId,
+    )
+    if (
+      !resource ||
+      !window.confirm(`Delete “${resource.name}”? This cannot be undone.`)
+    ) {
       return
     }
 
@@ -116,7 +117,7 @@ export const useResourcesController = (): ResourcesViewProps => {
   }
 }
 
-const useDebouncedValue = <Value,>(value: Value, delay: number) => {
+const useDebouncedValue = <Value>(value: Value, delay: number) => {
   const [debouncedValue, setDebouncedValue] = useState(value)
 
   useEffect(() => {

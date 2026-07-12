@@ -20,10 +20,7 @@ function App() {
         <Routes>
           <Route path="/resources" element={<ResourcesPage />} />
           <Route path="/resources/:resourceId" element={<ResourceOverviewPage />} />
-          <Route
-            path="/resources/:resourceId/basic-info"
-            element={<BasicInfoPage />}
-          />
+          <Route path="/resources/:resourceId/basic-info" element={<BasicInfoPage />} />
           <Route
             path="/resources/:resourceId/project-details"
             element={<ProjectDetailsPage />}

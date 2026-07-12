@@ -1,5 +1,8 @@
 import { useParams } from 'react-router-dom'
-import { mergeCompletedDraft, useCompletedDrafts } from '../completed-drafts/completedDrafts.model'
+import {
+  mergeCompletedDraft,
+  useCompletedDrafts,
+} from '../completed-drafts/completedDrafts.model'
 import { isBasicInfoComplete, isProjectDetailsComplete } from '../resource.rules'
 import { useResource } from '../resources.queries'
 import type { ResourceDetailsViewProps } from './resource-details.view-model'
@@ -15,7 +18,10 @@ export const useResourceDetailsController = (): ResourceDetailsViewProps => {
     return {
       isLoading: query.isPending,
       isError: query.isError,
-      errorMessage: query.error instanceof Error ? query.error.message : 'Resource could not be loaded.',
+      errorMessage:
+        query.error instanceof Error
+          ? query.error.message
+          : 'Resource could not be loaded.',
       resource: null,
       onRetry: () => void query.refetch(),
     }
@@ -55,7 +61,10 @@ export const useResourceDetailsController = (): ResourceDetailsViewProps => {
             { label: 'Project name', value: resource.projectDetails.projectName || '—' },
             { label: 'Budget', value: resource.projectDetails.budget || '—' },
             { label: 'Category', value: resource.projectDetails.category || '—' },
-            { label: 'Team members', value: resource.projectDetails.options.join(', ') || '—' },
+            {
+              label: 'Team members',
+              value: resource.projectDetails.options.join(', ') || '—',
+            },
           ],
         },
       ],

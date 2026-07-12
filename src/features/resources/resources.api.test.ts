@@ -101,25 +101,62 @@ describe('resources API', () => {
   })
 
   it('updates draft modules through separate PATCH endpoints', async () => {
-    const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(response({ resourceId: 8 }))
-    const basicInfo = { resourceName: 'Locked', owner: 'Ada', email: 'a@b.com', description: 'Test', priority: 'high' }
-    const projectDetails = { projectName: 'Project', budget: '100', category: 'internal', options: ['FE devs'] }
+    const fetchMock = vi
+      .spyOn(globalThis, 'fetch')
+      .mockResolvedValue(response({ resourceId: 8 }))
+    const basicInfo = {
+      resourceName: 'Locked',
+      owner: 'Ada',
+      email: 'a@b.com',
+      description: 'Test',
+      priority: 'high',
+    }
+    const projectDetails = {
+      projectName: 'Project',
+      budget: '100',
+      category: 'internal',
+      options: ['FE devs'],
+    }
 
     await updateBasicInfo(8, basicInfo)
     await updateProjectDetails(8, projectDetails)
 
-    expect(fetchMock).toHaveBeenNthCalledWith(1, 'http://localhost:5001/api/resources/8/basic-info', expect.objectContaining({ method: 'PATCH', body: JSON.stringify(basicInfo) }))
-    expect(fetchMock).toHaveBeenNthCalledWith(2, 'http://localhost:5001/api/resources/8/project-details', expect.objectContaining({ method: 'PATCH', body: JSON.stringify(projectDetails) }))
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      1,
+      'http://localhost:5001/api/resources/8/basic-info',
+      expect.objectContaining({ method: 'PATCH', body: JSON.stringify(basicInfo) }),
+    )
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      2,
+      'http://localhost:5001/api/resources/8/project-details',
+      expect.objectContaining({ method: 'PATCH', body: JSON.stringify(projectDetails) }),
+    )
   })
 
   it('persists completed changes through the full PUT endpoint', async () => {
-    const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(response({ resourceId: 8 }))
+    const fetchMock = vi
+      .spyOn(globalThis, 'fetch')
+      .mockResolvedValue(response({ resourceId: 8 }))
     const data = {
       name: 'Locked',
-      basicInfo: { resourceName: 'Locked', owner: 'Ada', email: 'a@b.com', description: 'Test', priority: 'high' },
-      projectDetails: { projectName: 'Project', budget: '100', category: 'internal', options: ['FE devs'] },
+      basicInfo: {
+        resourceName: 'Locked',
+        owner: 'Ada',
+        email: 'a@b.com',
+        description: 'Test',
+        priority: 'high',
+      },
+      projectDetails: {
+        projectName: 'Project',
+        budget: '100',
+        category: 'internal',
+        options: ['FE devs'],
+      },
     }
     await replaceCompletedResource(8, data)
-    expect(fetchMock).toHaveBeenCalledWith('http://localhost:5001/api/resources/8', expect.objectContaining({ method: 'PUT', body: JSON.stringify(data) }))
+    expect(fetchMock).toHaveBeenCalledWith(
+      'http://localhost:5001/api/resources/8',
+      expect.objectContaining({ method: 'PUT', body: JSON.stringify(data) }),
+    )
   })
 })

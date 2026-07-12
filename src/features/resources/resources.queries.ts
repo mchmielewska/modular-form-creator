@@ -1,4 +1,9 @@
-import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query'
 import {
   createResource,
   deleteResource,
@@ -87,8 +92,13 @@ export const useUpdateProjectDetails = () => {
 export const useReplaceCompletedResource = () => {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: ({ resourceId, data }: { resourceId: number; data: ResourceUpdatePayload }) =>
-      replaceCompletedResource(resourceId, data),
+    mutationFn: ({
+      resourceId,
+      data,
+    }: {
+      resourceId: number
+      data: ResourceUpdatePayload
+    }) => replaceCompletedResource(resourceId, data),
     onSuccess: (resource) => updateResourceCache(queryClient, resource),
   })
 }

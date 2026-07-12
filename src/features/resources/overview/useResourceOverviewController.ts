@@ -2,7 +2,10 @@ import { useParams } from 'react-router-dom'
 import { canOpenProjectDetails, canProvision } from '../resource.rules'
 import { getErrorMessage } from '../resource.errors'
 import { isBasicInfoComplete, isProjectDetailsComplete } from '../resource.rules'
-import { mergeCompletedDraft, useCompletedDrafts } from '../completed-drafts/completedDrafts.model'
+import {
+  mergeCompletedDraft,
+  useCompletedDrafts,
+} from '../completed-drafts/completedDrafts.model'
 import {
   useProvisionResource,
   useReplaceCompletedResource,
@@ -74,7 +77,9 @@ export const useResourceOverviewController = (): ResourceOverviewViewProps => {
   const basicInfoComplete = isBasicInfoComplete(resource.basicInfo)
   const projectDetailsComplete = isProjectDetailsComplete(resource.projectDetails)
   const projectDetailsLocked = !canOpenProjectDetails(resource)
-  const completedModules = [basicInfoComplete, projectDetailsComplete].filter(Boolean).length
+  const completedModules = [basicInfoComplete, projectDetailsComplete].filter(
+    Boolean,
+  ).length
   const provisionError = provisionMutation.error ?? replaceMutation.error
 
   return {

@@ -76,10 +76,9 @@ describe('ResourcesPage', () => {
     const resources = screen.getByLabelText('Resources')
     expect(within(resources).getByText('Draft')).toBeVisible()
     expect(within(resources).getByText('0 of 2 modules complete')).toBeVisible()
-    expect(within(resources).getByRole('link', { name: 'Open resource' })).toHaveAttribute(
-      'href',
-      '/resources/12',
-    )
+    expect(
+      within(resources).getByRole('link', { name: 'Open resource' }),
+    ).toHaveAttribute('href', '/resources/12')
   })
 
   it('creates a resource after validating and trimming its name', async () => {
@@ -138,6 +137,8 @@ describe('ResourcesPage', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent('Backend unavailable')
     await user.click(screen.getByRole('button', { name: 'Try again' }))
 
-    expect(await screen.findByRole('heading', { name: 'No resources found' })).toBeVisible()
+    expect(
+      await screen.findByRole('heading', { name: 'No resources found' }),
+    ).toBeVisible()
   })
 })

@@ -5,7 +5,13 @@ import { useResource, useUpdateBasicInfo } from '../resources.queries'
 import { validateBasicInfo, type FieldErrors } from './resource-form.validation'
 import { useCompletedDrafts } from '../completed-drafts/completedDrafts.model'
 
-const EMPTY: BasicInfo = { resourceName: '', owner: '', email: '', description: '', priority: '' }
+const EMPTY: BasicInfo = {
+  resourceName: '',
+  owner: '',
+  email: '',
+  description: '',
+  priority: '',
+}
 
 export const useBasicInfoController = () => {
   const resourceId = Number(useParams().resourceId)
@@ -34,22 +40,31 @@ export const useBasicInfoController = () => {
     try {
       await mutation.mutateAsync({ resourceId, data })
       navigate(`/resources/${resourceId}`)
-    } catch { /* mutation state provides the message */ }
+    } catch {
+      /* mutation state provides the message */
+    }
   }
 
   return {
-    resourceId, data, errors,
+    resourceId,
+    data,
+    errors,
     isLoading: query.isPending,
     isReadOnly: query.isError,
     readOnlyMessage: query.error instanceof Error ? query.error.message : undefined,
-    noticeMessage: query.data?.status === 'completed' ? 'Changes are stored temporarily until you submit them from the overview.' : undefined,
-    submitLabel: query.data?.status === 'completed' ? 'Save draft changes' : 'Save and continue',
+    noticeMessage:
+      query.data?.status === 'completed'
+        ? 'Changes are stored temporarily until you submit them from the overview.'
+        : undefined,
+    submitLabel:
+      query.data?.status === 'completed' ? 'Save draft changes' : 'Save and continue',
     isSubmitting: mutation.isPending,
-    errorMessage: mutation.error instanceof Error
-      ? mutation.error.message
-      : query.error instanceof Error
-        ? query.error.message
-        : '',
+    errorMessage:
+      mutation.error instanceof Error
+        ? mutation.error.message
+        : query.error instanceof Error
+          ? query.error.message
+          : '',
     onChange,
     onSubmit: () => void onSubmit(),
   }

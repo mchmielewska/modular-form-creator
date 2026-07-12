@@ -21,7 +21,12 @@ describe('draft module validation', () => {
 
   it('validates Project Details using backend enums and integer budget', () => {
     expect(
-      validateProjectDetails({ projectName: '', budget: '10.5', category: '', options: [] }),
+      validateProjectDetails({
+        projectName: '',
+        budget: '10.5',
+        category: '',
+        options: [],
+      }),
     ).toEqual({
       projectName: 'Project name is required.',
       budget: 'Budget must be an integer.',
