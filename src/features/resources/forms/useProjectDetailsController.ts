@@ -44,12 +44,20 @@ export const useProjectDetailsController = () => {
   return {
     resourceId, data, errors,
     isLoading: query.isPending,
-    isReadOnly: Boolean(isLocked),
-    readOnlyMessage: isLocked ? 'Complete Basic Info before editing Project Details.' : undefined,
+    isReadOnly: Boolean(isLocked || query.isError),
+    readOnlyMessage: query.error instanceof Error
+      ? query.error.message
+      : isLocked
+        ? 'Complete Basic Info before editing Project Details.'
+        : undefined,
     noticeMessage: isCompleted ? 'Changes are stored temporarily until you submit them from the overview.' : undefined,
     submitLabel: isCompleted ? 'Save draft changes' : 'Save and continue',
     isSubmitting: mutation.isPending,
-    errorMessage: mutation.error instanceof Error ? mutation.error.message : '',
+    errorMessage: mutation.error instanceof Error
+      ? mutation.error.message
+      : query.error instanceof Error
+        ? query.error.message
+        : '',
     onChange,
     onSubmit: () => void onSubmit(),
   }

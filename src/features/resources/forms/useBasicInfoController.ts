@@ -40,11 +40,16 @@ export const useBasicInfoController = () => {
   return {
     resourceId, data, errors,
     isLoading: query.isPending,
-    isReadOnly: false,
+    isReadOnly: query.isError,
+    readOnlyMessage: query.error instanceof Error ? query.error.message : undefined,
     noticeMessage: query.data?.status === 'completed' ? 'Changes are stored temporarily until you submit them from the overview.' : undefined,
     submitLabel: query.data?.status === 'completed' ? 'Save draft changes' : 'Save and continue',
     isSubmitting: mutation.isPending,
-    errorMessage: mutation.error instanceof Error ? mutation.error.message : '',
+    errorMessage: mutation.error instanceof Error
+      ? mutation.error.message
+      : query.error instanceof Error
+        ? query.error.message
+        : '',
     onChange,
     onSubmit: () => void onSubmit(),
   }

@@ -66,6 +66,14 @@ describe('draft resource forms', () => {
     expect(screen.queryByRole('button', { name: 'Save and continue' })).not.toBeInTheDocument()
   })
 
+  it('does not expose a writable form when the resource cannot be loaded', async () => {
+    vi.mocked(getResource).mockRejectedValue(new Error('Resource not found'))
+    renderForm('/resources/12/basic-info', <BasicInfoPage />)
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('Resource not found')
+    expect(screen.queryByRole('button', { name: 'Save and continue' })).not.toBeInTheDocument()
+  })
+
   it('saves Project Details through its separate endpoint after unlock', async () => {
     vi.mocked(getResource).mockResolvedValue({ ...draft, basicInfo: { resourceName: 'Locked name', owner: 'Ada', email: 'ada@example.com', description: 'Ready', priority: 'high' } })
     const user = userEvent.setup()
