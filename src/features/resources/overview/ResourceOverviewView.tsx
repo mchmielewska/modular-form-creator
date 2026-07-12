@@ -86,6 +86,7 @@ const BackLink = styled(Link)`
   font-weight: 700;
   text-decoration: none;
 `
+
 const OverviewHeader = styled.header`
   display: flex;
   align-items: flex-start;
@@ -93,10 +94,12 @@ const OverviewHeader = styled.header`
   gap: ${({ theme }) => theme.spacing.lg};
   margin: ${({ theme }) => `${theme.spacing.lg} 0 ${theme.spacing.xl}`};
 `
+
 const ResourceId = styled.p`
   margin: 0 0 ${({ theme }) => theme.spacing.xs};
   color: ${({ theme }) => theme.colors.inkMuted};
 `
+
 const Title = styled.h1`
   margin: 0;
   color: ${({ theme }) => theme.colors.inkStrong};
@@ -104,6 +107,7 @@ const Title = styled.h1`
   font-size: clamp(2rem, 5vw, 3.25rem);
   line-height: 1.1;
 `
+
 const ErrorBanner = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing.lg};
   padding: ${({ theme }) => theme.spacing.md};
@@ -111,6 +115,7 @@ const ErrorBanner = styled.div`
   color: ${({ theme }) => theme.colors.warning};
   background: ${({ theme }) => theme.colors.accentSoft};
 `
+
 const ModulesGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -119,6 +124,7 @@ const ModulesGrid = styled.div`
     grid-template-columns: 1fr;
   }
 `
+
 const StatePanel = styled.div`
   display: grid;
   justify-items: start;
@@ -130,10 +136,12 @@ const StatePanel = styled.div`
   background: ${({ theme }) => theme.colors.surface};
   color: ${({ theme }) => theme.colors.inkMuted};
 `
+
 const ErrorTitle = styled.h1`
   margin: 0;
   color: ${({ theme }) => theme.colors.inkStrong};
 `
+
 const StateActions = styled.div`
   display: flex;
   align-items: center;

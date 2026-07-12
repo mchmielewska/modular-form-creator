@@ -48,6 +48,7 @@ const Panel = styled.section`
     flex-direction: column;
   }
 `
+
 const Label = styled.p`
   margin: 0 0 ${({ theme }) => theme.spacing.xs};
   color: ${({ theme }) => theme.colors.primary};
@@ -56,15 +57,18 @@ const Label = styled.p`
   letter-spacing: 0.06em;
   text-transform: uppercase;
 `
+
 const Title = styled.h2`
   margin: 0;
   color: ${({ theme }) => theme.colors.inkStrong};
   font-family: ${({ theme }) => theme.typography.heading};
 `
+
 const Hint = styled.p`
   margin: ${({ theme }) => `${theme.spacing.sm} 0 0`};
   color: ${({ theme }) => theme.colors.inkMuted};
 `
+
 const Actions = styled.div`
   display: flex;
   align-items: center;

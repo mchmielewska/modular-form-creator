@@ -67,6 +67,7 @@ const BackLink = styled(Link)`
   font-weight: 700;
   text-decoration: none;
 `
+
 const Header = styled.header`
   display: flex;
   justify-content: space-between;
@@ -82,15 +83,18 @@ const Header = styled.header`
     font-family: ${({ theme }) => theme.typography.heading};
   }
 `
+
 const Progress = styled.p`
   margin-bottom: ${({ theme }) => theme.spacing.lg};
   color: ${({ theme }) => theme.colors.inkMuted};
 `
+
 const Notice = styled.p`
   padding: ${({ theme }) => theme.spacing.md};
   border-radius: ${({ theme }) => theme.radii.md};
   background: ${({ theme }) => theme.colors.accentSoft};
 `
+
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -99,6 +103,7 @@ const Grid = styled.div`
     grid-template-columns: 1fr;
   }
 `
+
 const DetailCard = styled(Card)`
   h2 {
     margin-top: 0;
@@ -106,6 +111,7 @@ const DetailCard = styled(Card)`
     font-family: ${({ theme }) => theme.typography.heading};
   }
 `
+
 const Fields = styled.dl`
   margin: 0;
   display: grid;
@@ -123,6 +129,7 @@ const Fields = styled.dl`
     color: ${({ theme }) => theme.colors.inkStrong};
   }
 `
+
 const State = styled.div`
   padding: ${({ theme }) => theme.spacing.xl};
 `

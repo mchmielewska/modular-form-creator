@@ -77,6 +77,7 @@ const BackLink = styled(Link)`
   font-weight: 700;
   text-decoration: none;
 `
+
 const Header = styled.header`
   margin: ${({ theme }) => `${theme.spacing.lg} 0 ${theme.spacing.xl}`};
   h1 {
@@ -87,21 +88,26 @@ const Header = styled.header`
     color: ${({ theme }) => theme.colors.inkMuted};
   }
 `
+
 const FormCard = styled(Card)`
   max-width: 760px;
 `
+
 const Form = styled.form`
   display: grid;
   gap: ${({ theme }) => theme.spacing.lg};
 `
+
 const Notice = styled.p`
   padding: ${({ theme }) => theme.spacing.md};
   border-radius: ${({ theme }) => theme.radii.md};
   background: ${({ theme }) => theme.colors.accentSoft};
 `
+
 const Error = styled.p`
   color: ${({ theme }) => theme.colors.warning};
 `
+
 const State = styled.div`
   padding: ${({ theme }) => theme.spacing.xl};
 `
