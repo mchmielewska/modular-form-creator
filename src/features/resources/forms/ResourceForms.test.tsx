@@ -275,4 +275,62 @@ describe('draft resource forms', () => {
       screen.queryByRole('button', { name: 'Submit changes' }),
     ).not.toBeInTheDocument()
   })
+
+  it('buffers completed Project Details edits without sending a module PATCH', async () => {
+    const completed = {
+      ...draft,
+      status: 'completed' as const,
+      basicInfo: {
+        resourceName: 'Locked name',
+        owner: 'Ada',
+        email: 'ada@example.com',
+        description: 'Ready',
+        priority: 'high',
+      },
+      projectDetails: {
+        projectName: 'Original project',
+        budget: '100',
+        category: 'internal',
+        options: ['FE devs'],
+      },
+    }
+    vi.mocked(getResource).mockResolvedValue(completed)
+    const client = new QueryClient({
+      defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
+    })
+    const user = userEvent.setup()
+    render(
+      <ThemeProvider theme={theme}>
+        <QueryClientProvider client={client}>
+          <CompletedDraftsProvider>
+            <MemoryRouter initialEntries={['/resources/12/project-details']}>
+              <Routes>
+                <Route
+                  path="/resources/:resourceId/project-details"
+                  element={<ProjectDetailsPage />}
+                />
+                <Route path="/resources/:resourceId" element={<ResourceOverviewPage />} />
+              </Routes>
+            </MemoryRouter>
+          </CompletedDraftsProvider>
+        </QueryClientProvider>
+      </ThemeProvider>,
+    )
+
+    const projectName = await screen.findByRole('textbox', { name: 'Project name' })
+    await user.clear(projectName)
+    await user.type(projectName, 'Buffered project')
+    await user.click(screen.getByRole('button', { name: 'Save draft changes' }))
+
+    expect(updateProjectDetails).not.toHaveBeenCalled()
+    await user.click(await screen.findByRole('button', { name: 'Submit changes' }))
+    await waitFor(() =>
+      expect(replaceCompletedResource).toHaveBeenCalledWith(
+        12,
+        expect.objectContaining({
+          projectDetails: expect.objectContaining({ projectName: 'Buffered project' }),
+        }),
+      ),
+    )
+  })
 })

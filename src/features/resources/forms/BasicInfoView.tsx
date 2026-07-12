@@ -20,9 +20,16 @@ interface Props {
 export function BasicInfoView(props: Props) {
   return (
     <ModuleFormLayout
-      {...props}
+      resourceId={props.resourceId}
       title="Basic Info"
       description="Add ownership and contact details. The resource name is locked after creation."
+      isLoading={props.isLoading}
+      errorMessage={props.errorMessage}
+      isSubmitting={props.isSubmitting}
+      isReadOnly={props.isReadOnly}
+      noticeMessage={props.noticeMessage}
+      submitLabel={props.submitLabel}
+      onSubmit={props.onSubmit}
     >
       <Input label="Resource name" value={props.data.resourceName} state="locked" />
       <Input

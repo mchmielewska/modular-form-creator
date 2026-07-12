@@ -25,9 +25,17 @@ interface Props {
 export function ProjectDetailsView(props: Props) {
   return (
     <ModuleFormLayout
-      {...props}
+      resourceId={props.resourceId}
       title="Project Details"
       description="Define the project scope and team involved."
+      isLoading={props.isLoading}
+      errorMessage={props.errorMessage}
+      isSubmitting={props.isSubmitting}
+      isReadOnly={props.isReadOnly}
+      readOnlyMessage={props.readOnlyMessage}
+      noticeMessage={props.noticeMessage}
+      submitLabel={props.submitLabel}
+      onSubmit={props.onSubmit}
     >
       <Input
         label="Project name"
