@@ -2,7 +2,9 @@ import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tansta
 import {
   createResource,
   deleteResource,
+  getResource,
   listResources,
+  provisionResource,
   type ListResourcesParams,
 } from './resources.api'
 
@@ -10,6 +12,8 @@ export const resourceKeys = {
   all: ['resources'] as const,
   lists: () => [...resourceKeys.all, 'list'] as const,
   list: (params: ListResourcesParams) => [...resourceKeys.lists(), params] as const,
+  details: () => [...resourceKeys.all, 'detail'] as const,
+  detail: (resourceId: number) => [...resourceKeys.details(), resourceId] as const,
 }
 
 export const useResources = (params: ListResourcesParams) =>
@@ -34,5 +38,24 @@ export const useDeleteResource = () => {
   return useMutation({
     mutationFn: (resourceId: number) => deleteResource(resourceId),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: resourceKeys.lists() }),
+  })
+}
+
+export const useResource = (resourceId: number) =>
+  useQuery({
+    queryKey: resourceKeys.detail(resourceId),
+    queryFn: ({ signal }) => getResource(resourceId, signal),
+    enabled: Number.isInteger(resourceId) && resourceId > 0,
+  })
+
+export const useProvisionResource = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (resourceId: number) => provisionResource(resourceId),
+    onSuccess: (resource) => {
+      queryClient.setQueryData(resourceKeys.detail(resource.resourceId), resource)
+      return queryClient.invalidateQueries({ queryKey: resourceKeys.lists() })
+    },
   })
 }

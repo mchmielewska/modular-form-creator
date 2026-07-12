@@ -1,5 +1,11 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { createResource, deleteResource, listResources } from './resources.api'
+import {
+  createResource,
+  deleteResource,
+  getResource,
+  listResources,
+  provisionResource,
+} from './resources.api'
 
 const response = (body: unknown, ok = true) =>
   ({ ok, json: vi.fn().mockResolvedValue(body) }) as unknown as Response
@@ -63,5 +69,31 @@ describe('resources API', () => {
     )
 
     await expect(deleteResource(99)).rejects.toThrow('Resource not found')
+  })
+
+  it('loads one resource by numeric id', async () => {
+    const fetchMock = vi
+      .spyOn(globalThis, 'fetch')
+      .mockResolvedValue(response({ resourceId: 8 }))
+
+    await getResource(8)
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      'http://localhost:5001/api/resources/8',
+      expect.objectContaining({ headers: expect.any(Object) }),
+    )
+  })
+
+  it('provisions only through the dedicated status endpoint', async () => {
+    const fetchMock = vi
+      .spyOn(globalThis, 'fetch')
+      .mockResolvedValue(response({ resourceId: 8, status: 'completed' }))
+
+    await provisionResource(8)
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      'http://localhost:5001/api/resources/8/provisioning',
+      expect.objectContaining({ method: 'PATCH' }),
+    )
   })
 })

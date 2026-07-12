@@ -1,6 +1,8 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import styled from 'styled-components'
 import { ResourcesPage } from './features/resources/ResourcesPage'
+import { PendingResourceRoute } from './features/resources/PendingResourceRoute'
+import { ResourceOverviewPage } from './features/resources/overview/ResourceOverviewPage'
 
 function App() {
   return (
@@ -15,6 +17,34 @@ function App() {
       <Main>
         <Routes>
           <Route path="/resources" element={<ResourcesPage />} />
+          <Route path="/resources/:resourceId" element={<ResourceOverviewPage />} />
+          <Route
+            path="/resources/:resourceId/basic-info"
+            element={
+              <PendingResourceRoute
+                title="Basic Info"
+                description="The Basic Info form is the next reviewed implementation step."
+              />
+            }
+          />
+          <Route
+            path="/resources/:resourceId/project-details"
+            element={
+              <PendingResourceRoute
+                title="Project Details"
+                description="The Project Details form is the next reviewed implementation step."
+              />
+            }
+          />
+          <Route
+            path="/resources/:resourceId/details"
+            element={
+              <PendingResourceRoute
+                title="Resource details"
+                description="The combined resource summary will be implemented in its planned step."
+              />
+            }
+          />
           <Route path="*" element={<Navigate to="/resources" replace />} />
         </Routes>
       </Main>

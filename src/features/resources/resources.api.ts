@@ -51,3 +51,9 @@ export const createResource = (resourceName: string) =>
 
 export const deleteResource = (resourceId: number) =>
   request<Resource>(`/resources/${resourceId}`, { method: 'DELETE' })
+
+export const getResource = (resourceId: number, signal?: AbortSignal) =>
+  request<Resource>(`/resources/${resourceId}`, { signal })
+
+export const provisionResource = (resourceId: number) =>
+  request<Resource>(`/resources/${resourceId}/provisioning`, { method: 'PATCH' })

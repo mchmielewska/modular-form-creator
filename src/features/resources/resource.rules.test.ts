@@ -22,8 +22,8 @@ const completeResource: Resource = {
   projectDetails: {
     projectName: 'Launch',
     budget: '50000',
-    category: 'Operations',
-    options: ['Reporting'],
+    category: 'internal',
+    options: ['FE devs'],
   },
 }
 
