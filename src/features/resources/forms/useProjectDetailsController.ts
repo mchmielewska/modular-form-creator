@@ -10,6 +10,7 @@ const EMPTY: ProjectDetails = { projectName: '', budget: '', category: '', optio
 
 export const useProjectDetailsController = () => {
   const resourceId = Number(useParams().resourceId)
+  const isInvalidResource = !Number.isInteger(resourceId) || resourceId <= 0
   const navigate = useNavigate()
   const query = useResource(resourceId)
   const mutation = useUpdateProjectDetails()
@@ -46,6 +47,7 @@ export const useProjectDetailsController = () => {
 
   return {
     resourceId,
+    isInvalidResource,
     data,
     errors,
     isLoading: query.isPending,

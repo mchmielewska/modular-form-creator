@@ -127,6 +127,25 @@ describe('draft resource forms', () => {
     ).not.toBeInTheDocument()
   })
 
+  it.each([
+    ['/resources/not-a-number/basic-info', <BasicInfoPage />],
+    ['/resources/0/project-details', <ProjectDetailsPage />],
+  ])('keeps %s unavailable and non-writable', async (path, element) => {
+    renderForm(path, element)
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Resource id must be a positive number.',
+    )
+    expect(
+      screen.queryByRole('button', { name: 'Save and continue' }),
+    ).not.toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Back to resources' })).toHaveAttribute(
+      'href',
+      '/resources',
+    )
+    expect(getResource).not.toHaveBeenCalled()
+  })
+
   it('saves Project Details through its separate endpoint after unlock', async () => {
     vi.mocked(getResource).mockResolvedValue({
       ...draft,

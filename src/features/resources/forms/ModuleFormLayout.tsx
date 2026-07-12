@@ -5,6 +5,7 @@ import { Button, Card } from '../../../design-system'
 
 interface ModuleFormLayoutProps {
   resourceId: number
+  isInvalidResource: boolean
   title: string
   description: string
   isLoading: boolean
@@ -19,6 +20,16 @@ interface ModuleFormLayoutProps {
 }
 
 const ModuleFormLayout = (props: ModuleFormLayoutProps) => {
+  if (props.isInvalidResource) {
+    return (
+      <State>
+        <h1>Resource unavailable</h1>
+        <p role="alert">Resource id must be a positive number.</p>
+        <BackLink to="/resources">Back to resources</BackLink>
+      </State>
+    )
+  }
+
   if (props.isLoading) return <State role="status">Loading module…</State>
 
   return (

@@ -9,6 +9,7 @@ import {
 
 interface Props {
   resourceId: number
+  isInvalidResource: boolean
   data: ProjectDetails
   errors: FieldErrors
   isLoading: boolean
@@ -26,6 +27,7 @@ const ProjectDetailsView = (props: Props) => {
   return (
     <ModuleFormLayout
       resourceId={props.resourceId}
+      isInvalidResource={props.isInvalidResource}
       title="Project Details"
       description="Define the project scope and team involved."
       isLoading={props.isLoading}

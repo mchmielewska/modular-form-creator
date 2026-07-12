@@ -5,6 +5,7 @@ import { PRIORITIES, type FieldErrors } from './resource-form.validation'
 
 interface Props {
   resourceId: number
+  isInvalidResource: boolean
   data: BasicInfo
   errors: FieldErrors
   isLoading: boolean
@@ -21,6 +22,7 @@ const BasicInfoView = (props: Props) => {
   return (
     <ModuleFormLayout
       resourceId={props.resourceId}
+      isInvalidResource={props.isInvalidResource}
       title="Basic Info"
       description="Add ownership and contact details. The resource name is locked after creation."
       isLoading={props.isLoading}

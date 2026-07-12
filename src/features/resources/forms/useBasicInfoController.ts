@@ -15,6 +15,7 @@ const EMPTY: BasicInfo = {
 
 export const useBasicInfoController = () => {
   const resourceId = Number(useParams().resourceId)
+  const isInvalidResource = !Number.isInteger(resourceId) || resourceId <= 0
   const navigate = useNavigate()
   const query = useResource(resourceId)
   const mutation = useUpdateBasicInfo()
@@ -47,6 +48,7 @@ export const useBasicInfoController = () => {
 
   return {
     resourceId,
+    isInvalidResource,
     data,
     errors,
     isLoading: query.isPending,
