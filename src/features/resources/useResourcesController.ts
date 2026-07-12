@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { isBasicInfoComplete, isProjectDetailsComplete } from './resource.rules'
+import { getErrorMessage } from './resource.errors'
 import type { ResourceStatus } from './resource.types'
 import type { ResourcesViewProps } from './resources.view-model'
 import {
@@ -114,9 +115,6 @@ export const useResourcesController = (): ResourcesViewProps => {
     onRetry: () => void resourcesQuery.refetch(),
   }
 }
-
-const getErrorMessage = (error: unknown) =>
-  error instanceof Error ? error.message : 'Something went wrong. Please try again.'
 
 const useDebouncedValue = <Value,>(value: Value, delay: number) => {
   const [debouncedValue, setDebouncedValue] = useState(value)

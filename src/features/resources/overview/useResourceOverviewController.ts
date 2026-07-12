@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom'
 import { canOpenProjectDetails, canProvision } from '../resource.rules'
+import { getErrorMessage } from '../resource.errors'
 import { isBasicInfoComplete, isProjectDetailsComplete } from '../resource.rules'
 import { mergeCompletedDraft, useCompletedDrafts } from '../completed-drafts/completedDrafts.model'
 import {
@@ -144,6 +145,3 @@ const createErrorState = (errorMessage: string): ResourceOverviewViewProps => ({
   onDiscardChanges: () => undefined,
   onRetry: () => undefined,
 })
-
-const getErrorMessage = (error: unknown) =>
-  error instanceof Error ? error.message : 'Something went wrong. Please try again.'
